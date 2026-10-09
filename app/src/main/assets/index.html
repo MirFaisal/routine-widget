@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10121c">
+<meta name="description" content="Daily routine for Faisal and Akash with live tracking, streaks, reminders and a trading journal.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Faisal & Akash Routine</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: app shell with 4 views (Today, Week, Journal, Settings) and a bottom tab bar; night-shift palette */
+:root{
+  --bg:#f5f6fb; --surface:#ffffff; --fg:#1b1e2e; --muted:#5d6280; --line:#dfe2ee;
+  --accent:#c97a12; --accent-soft:#fbefdc; --now-bg:#1b1e2e; --now-fg:#f5f6fb; --now-muted:#a9aecb;
+  --office:#5b6b8c; --gym:#2f8f6b; --trade:#2a6fd6; --project:#c97a12; --rest:#8a8fa8; --together:#7c4dd1;
+  --good:#2f8f6b; --bad:#c2453d;
+  --display:"Sora",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10121c; --surface:#181b29; --fg:#e8e9f2; --muted:#9a9fbd; --line:#2a2e42;
+  --accent:#f0a83a; --accent-soft:#2c2416; --now-bg:#232740; --now-fg:#f2f3fa; --now-muted:#a9aecb;
+  --office:#8d9cc0; --gym:#4fc497; --trade:#6aa3ff; --project:#f0a83a; --rest:#7d829c; --together:#a985f0;
+  --good:#4fc497; --bad:#f07a6f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10121c; --surface:#181b29; --fg:#e8e9f2; --muted:#9a9fbd; --line:#2a2e42;
+  --accent:#f0a83a; --accent-soft:#2c2416; --now-bg:#232740; --now-fg:#f2f3fa; --now-muted:#a9aecb;
+  --office:#8d9cc0; --gym:#4fc497; --trade:#6aa3ff; --project:#f0a83a; --rest:#7d829c; --together:#a985f0;
+  --good:#4fc497; --bad:#f07a6f; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;margin:0}
+[hidden]{display:none!important}
+.loglist li.empty{display:block}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:20px 110px;display:flex;flex-direction:column;gap:18px}
+h1{font-family:var(--display);font-size:clamp(1.4rem,5vw,1.9rem);line-height:1.15;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-size:1.2rem;margin:0}
+h3{font-family:var(--display);font-size:1rem;margin:0}
+.sub{color:var(--muted);margin:2px 0 0;font-size:.9rem}
+.view{display:flex;flex-direction:column;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.label{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 14px;border-radius:10px;font-weight:500}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.btn.danger{color:var(--bad)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,select,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:8px 10px;min-width:0}
+textarea{resize:vertical;width:100%;box-sizing:border-box}
+.grow{flex:1 1 160px}
+
+/* Now panel */
+.now{background:var(--now-bg);color:var(--now-fg);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.now-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 16px}
+.clock{font-family:var(--mono);font-size:2rem;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.date{color:var(--now-muted);font-size:.9rem}
+.now .label{color:var(--now-muted)}
+.now-task{font-family:var(--display);font-size:1.3rem;line-height:1.25;margin:2px 0 0;display:flex;gap:10px;align-items:center}
+.bar{height:6px;border-radius:99px;background:color-mix(in srgb,var(--now-fg) 15%,transparent);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .6s}
+.now-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;font-size:.88rem;color:var(--now-muted)}
+.now-meta b{color:var(--now-fg);font-weight:600}
+.now .btn{background:transparent;color:var(--now-fg);border-color:color-mix(in srgb,var(--now-fg) 30%,transparent)}
+.now .btn.on{background:var(--good);border-color:var(--good);color:var(--now-bg)}
+.streak-chip{font-family:var(--mono);font-size:.85rem;color:var(--accent)}
+
+.controls{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.seg{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.seg button{padding:7px 16px;border-radius:999px;font-weight:600;border:0;background:transparent;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.days button{padding:8px 0 7px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;gap:1px;position:relative;color:var(--muted)}
+.days b{font-family:var(--display);font-size:.95rem;color:var(--fg)}
+.days small{font-size:.62rem;letter-spacing:.05em;text-transform:uppercase}
+.days button.off small{color:var(--gym)}
+.days button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.days button.is-today::after{content:"";position:absolute;top:5px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.days button.complete small{color:var(--good);font-weight:700}
+
+.head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+.tag{font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.focus{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.focus .card{padding:12px 14px;gap:2px}
+.focus .t .label{color:var(--trade)} .focus .p .label{color:var(--project)}
+.focus p{margin:0;font-weight:500}
+
+ol.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:28px 140px 1fr;gap:12px;padding:10px;margin-inline:-10px;border-bottom:1px solid var(--line);align-items:start;border-radius:10px}
+.tl time{font-family:var(--mono);font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:3px}
+.tl .act{display:flex;gap:10px;align-items:flex-start;min-width:0}
+.chk{width:24px;height:24px;border-radius:7px;border:2px solid var(--line);background:var(--surface);padding:0;display:grid;place-items:center;color:transparent;font-size:14px;font-weight:700;line-height:1}
+.chk[aria-pressed="true"]{background:var(--good);border-color:var(--good);color:var(--bg)}
+.chk:disabled{opacity:.35;cursor:not-allowed}
+.dot{width:10px;height:10px;border-radius:3px;flex:none;margin-top:6px;background:var(--rest)}
+.k-office .dot,.dot.k-office{background:var(--office)} .k-gym .dot,.dot.k-gym{background:var(--gym)}
+.k-trade .dot,.dot.k-trade{background:var(--trade)} .k-project .dot,.dot.k-project{background:var(--project)}
+.k-together .dot,.dot.k-together{background:var(--together)}
+.tl .key strong{font-weight:700}
+.tl .key.k-project strong{color:var(--project)} .tl .key.k-together strong{color:var(--together)}
+.tl em{display:block;font-style:normal;color:var(--muted);font-size:.85rem}
+.tl li.done-check strong{text-decoration:line-through;text-decoration-color:var(--muted)}
+.tl li.past:not(.done-check){opacity:.6}
+.tl li.current{background:var(--accent-soft);border-bottom-color:transparent;box-shadow:inset 3px 0 0 var(--accent)}
+.tl li.current time{color:var(--accent);font-weight:700}
+.pill{display:inline-block;margin-left:8px;font-size:.64rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:1px 7px;border-radius:99px;background:var(--accent);color:var(--bg);vertical-align:2px}
+.keytag{display:inline-block;margin-left:6px;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:0 6px;border-radius:99px;vertical-align:2px}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.8rem;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* Week */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.stat .big{font-family:var(--display);font-size:1.8rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .big small{font-size:.9rem;color:var(--muted);font-weight:500}
+.meter{display:grid;grid-template-columns:120px 1fr 52px;gap:10px;align-items:center;font-size:.9rem}
+.meter .track{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.meter .track i{display:block;height:100%;border-radius:99px}
+.meter span:last-child{font-family:var(--mono);font-size:.8rem;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.weekgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.weekgrid div{border-radius:10px;padding:8px 0;background:var(--bg);border:1px solid var(--line);font-size:.75rem;color:var(--muted)}
+.weekgrid b{display:block;font-family:var(--mono);font-size:.95rem;color:var(--fg)}
+.weekgrid .full{background:color-mix(in srgb,var(--good) 18%,var(--surface));border-color:var(--good)}
+.weekgrid .future{opacity:.45}
+.loglist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.loglist li{display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:.92rem}
+.loglist li b{font-family:var(--mono);font-size:.78rem;color:var(--muted);padding-top:2px}
+.empty{color:var(--muted);font-size:.9rem;margin:0}
+
+/* Journal */
+.jform{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.jform .full{grid-column:1/-1}
+.jform label{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--muted);font-weight:600;min-width:0}
+.jlist{display:flex;flex-direction:column;gap:10px}
+.jitem{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;background:var(--surface)}
+.jitem .top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.res{font-family:var(--mono);font-weight:700;font-size:.85rem}
+.res.win{color:var(--good)} .res.loss{color:var(--bad)} .res.be{color:var(--muted)}
+.jitem p{margin:0;font-size:.9rem} .jitem p span{color:var(--muted)}
+
+/* Settings / editor */
+.erow{display:grid;grid-template-columns:96px 96px 1fr 110px auto auto;gap:6px;align-items:center}
+.erow input[type=time]{width:100%;box-sizing:border-box}
+.erow .keybox{display:flex;align-items:center;gap:4px;font-size:.78rem;color:var(--muted)}
+.edlist{display:flex;flex-direction:column;gap:8px}
+.ehead{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.note{font-size:.85rem;color:var(--muted);margin:0}
+
+/* Bottom nav */
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:10}
+.tabbar nav{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tabbar button{border:0;background:transparent;color:var(--muted);padding:10px 0 12px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.75rem;font-weight:600}
+.tabbar svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabbar button[aria-current="page"]{color:var(--accent)}
+
+.toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:500;font-size:.9rem;z-index:20;max-width:calc(100% - 32px);box-sizing:border-box;text-align:center}
+
+@media (max-width:560px){
+  .tl li{grid-template-columns:28px 1fr;row-gap:2px}
+  .tl li time{grid-column:2}
+  .tl li .act{grid-column:2}
+  .days small{font-size:.54rem;letter-spacing:.02em}
+  .focus,.jform{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .stats .stat:last-child{grid-column:1/-1}
+  .clock{font-size:1.7rem}
+  .meter{grid-template-columns:90px 1fr 46px}
+  .erow{grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);padding-bottom:8px}
+  .erow .txt{grid-column:1/-1}
+  .ehead{display:none}
+}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<style>:root{padding-top:env(safe-area-inset-top,0px)}</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div>
+      <h1>Faisal & Akash Daily Routine</h1>
+      <p class="sub" id="who-sub"></p>
+    </div>
+    <div class="seg" role="group" aria-label="Choose person">
+      <button data-p="faisal" id="p-faisal">Faisal</button>
+      <button data-p="akash" id="p-akash">Akash</button>
+    </div>
+  </header>
+
+  <!-- TODAY -->
+  <section class="view" id="v-today">
+    <div class="now" aria-live="polite">
+      <div class="now-top">
+        <div class="clock" id="clock">--:--</div>
+        <div class="date" id="date"></div>
+      </div>
+      <div>
+        <div class="label" id="nowLabel">Right now</div>
+        <div class="now-task" id="nowTask"></div>
+      </div>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="now-meta"><span id="left"></span><span id="next"></span></div>
+      <div class="now-meta">
+        <span class="streak-chip" id="streakChip"></span>
+        <button class="btn" id="nowDone" hidden>Mark as done</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="label" id="weekTarget"></div>
+      <button class="btn" id="todayBtn" hidden>Back to today</button>
+    </div>
+    <nav class="days" id="days" aria-label="Choose day"></nav>
+
+    <div class="head"><h2 id="dayTitle"></h2><span class="tag" id="dayTag"></span></div>
+
+    <div class="focus">
+      <div class="card t"><span class="label">Trading focus</span><p id="fTrade"></p></div>
+      <div class="card p"><span class="label" id="fProjLabel">GRE project focus</span><p id="fProj"></p></div>
+    </div>
+
+    <ol class="tl" id="tl"></ol>
+
+    <div class="legend">
+      <span><i style="background:var(--office)"></i>Office</span>
+      <span><i style="background:var(--gym)"></i>Gym / exercise</span>
+      <span><i style="background:var(--together)"></i>Trading together</span>
+      <span><i style="background:var(--trade)"></i>Trading / learning</span>
+      <span><i style="background:var(--project)"></i>GRE project</span>
+      <span><i style="background:var(--rest)"></i>Rest / personal</span>
+    </div>
+  </section>
+
+  <!-- WEEK -->
+  <section class="view" id="v-week" hidden>
+    <div class="head"><h2>This week</h2><span class="tag" id="weekRange"></span></div>
+    <div class="stats">
+      <div class="stat"><div class="label">Streak</div><div class="big" id="sStreak"></div></div>
+      <div class="stat"><div class="label">Week score</div><div class="big" id="sScore"></div></div>
+      <div class="stat"><div class="label">Full days</div><div class="big" id="sFull"></div></div>
+    </div>
+    <div class="card">
+      <span class="label">Key blocks done so far</span>
+      <div id="meters" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+    <div class="card">
+      <span class="label">Day by day (key blocks)</span>
+      <div class="weekgrid" id="weekgrid"></div>
+      <p class="note">A day counts for your streak when every key block is checked.</p>
+    </div>
+    <div class="card">
+      <label class="label" for="targetInput">This week's project target</label>
+      <div class="row">
+        <input id="targetInput" class="grow" maxlength="120" placeholder="e.g. Finish user profile page">
+        <button class="btn primary" id="targetSave">Save</button>
+      </div>
+      <div class="row">
+        <button class="btn" id="targetDone"></button>
+      </div>
+    </div>
+    <div class="card">
+      <span class="label">Share with your partner</span>
+      <p class="note">Copy today's summary and send it on WhatsApp or Messenger.</p>
+      <textarea id="summary" rows="6" readonly></textarea>
+      <div class="row"><button class="btn primary" id="copySummary">Copy summary</button></div>
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section class="view" id="v-journal" hidden>
+    <div class="head"><h2>Trading journal</h2><span class="tag" id="jCount"></span></div>
+    <form class="card jform" id="jform">
+      <label>Pair or symbol<input id="jPair" required maxlength="20" placeholder="EURUSD"></label>
+      <label>Direction<select id="jDir"><option>Buy</option><option>Sell</option></select></label>
+      <label class="full">Why did you enter?<input id="jWhy" required maxlength="160" placeholder="Breakout above resistance with volume"></label>
+      <label class="full">Why did you exit?<input id="jExit" maxlength="160" placeholder="Hit take profit at 1:2"></label>
+      <label>Result<select id="jRes"><option value="win">Win</option><option value="loss">Loss</option><option value="be">Break even</option></select></label>
+      <label>Result in R (risk units)<input id="jR" type="number" step="0.1" placeholder="2"></label>
+      <label class="full">Lesson<input id="jLesson" maxlength="160" placeholder="Wait for candle close before entry"></label>
+      <div class="full row"><button class="btn primary" type="submit">Add trade</button></div>
+    </form>
+    <div class="stats" id="jStats"></div>
+    <div class="jlist" id="jList"></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="view" id="v-settings" hidden>
+    <h2>Settings</h2>
+    <div class="card">
+      <span class="label">Reminders</span>
+      <p class="note">Get a notification 5 minutes before each block starts. Works best in the installed app, while it is open or running in the background.</p>
+      <div class="row">
+        <button class="btn primary" id="notifyBtn"></button>
+        <span class="note" id="notifyState"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="head">
+        <span class="label">Edit routine</span>
+        <select id="edDay" aria-label="Day to edit"></select>
+      </div>
+      <p class="note">Editing <b id="edWho"></b>. Times after midnight (like 1:00 AM) count as the same night. "Key" blocks count for streaks and the week score.</p>
+      <div class="erow ehead"><span>Start</span><span>End</span><span>Activity</span><span>Type</span><span>Key</span><span></span></div>
+      <div class="edlist" id="edList"></div>
+      <div class="row">
+        <button class="btn" id="edAdd">Add block</button>
+        <button class="btn primary" id="edSave">Save day</button>
+        <button class="btn danger" id="edReset">Reset to default</button>
+      </div>
+      <div class="row" id="edResetConfirm" hidden>
+        <span class="note">Reset this day to the default routine?</span>
+        <button class="btn danger" id="edResetYes">Yes, reset</button>
+        <button class="btn" id="edResetNo">Cancel</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Backup</span>
+      <p class="note">Your checks, logs and journal are saved on this phone only. Copy a backup now and then, and paste it here to restore.</p>
+      <textarea id="backup" rows="4" placeholder="Paste a backup here to restore"></textarea>
+      <div class="row">
+        <button class="btn" id="bkCopy">Copy backup</button>
+        <button class="btn primary" id="bkRestore">Restore from pasted text</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="tabbar">
+  <nav aria-label="Sections">
+    <button data-v="today" id="t-today"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Today</button>
+    <button data-v="week" id="t-week"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Week</button>
+    <button data-v="journal" id="t-journal"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Journal</button>
+    <button data-v="settings" id="t-settings"><svg viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Settings</button>
+  </nav>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ================= Default routine =================
+   Times "HH:MM" 24h. After midnight use 24+ ("25:00" = 1:00 AM) so the night
+   stays part of the same routine day. Key blocks (last arg true) count for streaks. */
+const DAY_START = 6 * 60; // before 6:00 AM still counts as the previous night
+const DAYS = [
+  {k:"Sat", n:"Saturday",  trade:"Learn one new strategy or concept",          proj:"Plan the week: set this week's target"},
+  {k:"Sun", n:"Sunday",    trade:"Chart reading and patterns",                 proj:"Build a feature (coding)"},
+  {k:"Mon", n:"Monday",    trade:"Paper trading on a demo account",            proj:"Build a feature (coding)"},
+  {k:"Tue", n:"Tuesday",   trade:"Risk management and position sizing",        proj:"Fix bugs and refactor code"},
+  {k:"Wed", n:"Wednesday", trade:"Paper trading and write the trade journal",  proj:"Testing"},
+  {k:"Thu", n:"Thursday",  off:true, trade:"Backtest a strategy on old data",  proj:"Long session: one big feature"},
+  {k:"Fri", n:"Friday",    off:true, trade:"Weekly review: swap journals with Akash", proj:"Morning build + plan next week"}
+];
+const KINDS = {office:"Office", gym:"Gym / exercise", together:"Trading together", trade:"Trading / learning", project:"GRE project", rest:"Rest / personal"};
+const toMin = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+const B = (s, e, a, k, note, key) => ({s: toMin(s), e: toMin(e), a, k, note: note || "", key: !!key});
+
+const morningWork = [
+  B("07:30","08:00","Wake up, freshen up, breakfast","rest"),
+  B("08:00","08:20","Quick market check, plan today's 3 main tasks","trade"),
+  B("08:20","09:00","Travel to office + learning audio","trade","Trading video, podcast or project docs"),
+  B("09:00","18:00","Office","office"),
+  B("18:00","18:40","Snack, travel to gym + learning audio","trade"),
+  B("18:40","21:00","Gym","gym",null,true),
+  B("21:00","22:00","Shower, dinner, rest","rest","Try to stay off screens"),
+  B("22:00","22:30","Free time, or update trading journal","rest")
+];
+const nightTogether = [
+  B("22:30","23:30","Trading practice with Akash","together",null,true),
+  B("23:30","23:45","Short break, tea or water","rest")
+];
+const nightShort = (note) => [ ...nightTogether,
+  B("23:45","24:45","GRE project","project",note || "Deep work, phone on silent",true),
+  B("24:45","25:00","Commit code, write tomorrow's to-do, sleep at 1 AM","rest","6.5 hours of sleep")
+];
+const nightLong = (note) => [ ...nightTogether,
+  B("23:45","25:30","GRE project","project",note || "Deep work, phone on silent",true),
+  B("25:30","26:00","Commit code, sleep at 2 AM","rest","Tomorrow is off, sleep in")
+];
+const FAISAL_DEFAULT = {
+  Sat: [...morningWork, ...nightShort("Set this week's project target first")],
+  Sun: [...morningWork, ...nightShort()],
+  Mon: [...morningWork, ...nightShort()],
+  Tue: [...morningWork, ...nightShort()],
+  Wed: [...morningWork, ...nightLong()],
+  Thu: [
+    B("09:00","10:00","Wake up, breakfast","rest"),
+    B("10:00","13:00","GRE project, long session","project","Fresh mind, best for hard features",true),
+    B("13:00","15:00","Lunch and rest","rest"),
+    B("15:00","17:00","Solo trading backtesting","trade"),
+    B("17:00","18:30","Errands, family, friends","rest"),
+    B("18:40","21:00","Gym","gym",null,true),
+    B("21:00","22:30","Dinner, free time","rest"),
+    ...nightLong()
+  ],
+  Fri: [
+    B("09:00","10:00","Wake up, breakfast","rest"),
+    B("10:00","12:00","GRE project, morning session","project","Best focus of the week",true),
+    B("12:30","15:00","Jumu'ah, lunch with family","rest"),
+    B("15:00","16:30","Clean room, laundry, weekly errands","rest"),
+    B("16:30","18:00","Rest, outing or hobby","rest","No work, no charts"),
+    B("18:40","21:00","Gym, or a rest day for your body","gym"),
+    B("21:00","22:30","Dinner, free time","rest"),
+    B("22:30","23:30","Weekly trading review with Akash","together","Swap journals, find your biggest mistake",true),
+    B("23:30","23:45","Short break","rest"),
+    B("23:45","24:45","Plan next week, set project target","project",null,true),
+    B("24:45","25:00","Sleep at 1 AM","rest","Work starts tomorrow")
+  ]
+};
+const AKASH_DAY = [
+  B("07:30","07:40","Wake up","rest"),
+  B("07:40","08:00","20-minute home workout","gym","He has no gym time, so this keeps him fit",true),
+  B("08:00","09:00","Breakfast, travel + learning audio","trade"),
+  B("09:00","22:00","Office","office","Take a 10-minute walk at lunch"),
+  B("22:00","22:30","Dinner, freshen up","rest"),
+  B("22:30","23:30","Trading practice with Faisal","together",null,true),
+  B("23:30","24:00","Update trading journal or light learning","trade"),
+  B("24:00","24:30","Wind down, sleep by 12:30 AM","rest","7 hours of sleep: he works 13 hours a day")
+];
+const AKASH_DEFAULT = Object.fromEntries(DAYS.map(d => [d.k, AKASH_DAY]));
+const DEFAULTS = {faisal: FAISAL_DEFAULT, akash: AKASH_DEFAULT};
+
+/* ================= Storage ================= */
+const STORE_KEY = "routine-app-v2";
+let S = {person:"faisal", checks:{}, logs:{}, targets:{}, journal:[], custom:{faisal:{}, akash:{}}, notify:false, notified:{}};
+try { const raw = localStorage.getItem(STORE_KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e){}
+function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e){} pushNative(); }
+
+/* Android app bridge: sends the routine to the home screen widget and native reminders */
+const isNative = !!window.RoutineNative;
+function pushNative(){
+  if (!isNative) return;
+  try {
+    const schedules = {};
+    ["faisal", "akash"].forEach(p => {
+      schedules[p] = Object.fromEntries(DAYS.map((d, i) => [d.k, schedule(p, i).map(b => ({s:b.s, e:b.e, a:b.a, k:b.k, key:b.key}))]));
+    });
+    RoutineNative.saveState(JSON.stringify({
+      person: S.person, notify: !!S.notify,
+      streak: {faisal: streak("faisal"), akash: streak("akash")},
+      schedules
+    }));
+  } catch(e){}
+}
+
+/* ================= Date helpers ================= */
+const pad = n => String(n).padStart(2, "0");
+const dKey = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const dayIdxOf = d => (d.getDay() + 1) % 7; // Sat=0 … Fri=6
+function routineNow(){
+  const real = new Date();
+  let m = real.getHours() * 60 + real.getMinutes();
+  let rd = new Date(real.getFullYear(), real.getMonth(), real.getDate());
+  if (m < DAY_START){ rd = addDays(rd, -1); m += 1440; }
+  return {real, date: rd, day: dayIdxOf(rd), min: m};
+}
+function fmt(min){
+  min = ((min % 1440) + 1440) % 1440;
+  let h = Math.floor(min / 60), m = min % 60;
+  const ap = h >= 12 ? "PM" : "AM"; h = h % 12 || 12;
+  return h + ":" + pad(m) + " " + ap;
+}
+const hhmm = min => { min = ((min % 1440) + 1440) % 1440; return pad(Math.floor(min / 60)) + ":" + pad(min % 60); };
+function dur(min){ const h = Math.floor(min / 60), m = min % 60; return h && m ? `${h}h ${m}m` : h ? `${h}h` : `${m}m`; }
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const shortDate = d => d.toLocaleDateString([], {day:"numeric", month:"short"});
+
+/* ================= Model ================= */
+function schedule(person, dayIdx){
+  const k = DAYS[dayIdx].k;
+  return (S.custom[person] && S.custom[person][k]) || DEFAULTS[person][k];
+}
+const ck = (person, date) => person + "|" + dKey(date);
+const isChecked = (person, date, b) => (S.checks[ck(person, date)] || []).includes(b.s);
+function toggleCheck(person, date, b){
+  const k = ck(person, date), arr = S.checks[k] || [];
+  const i = arr.indexOf(b.s);
+  if (i >= 0) arr.splice(i, 1); else arr.push(b.s);
+  S.checks[k] = arr; save();
+}
+function dayStats(person, date){
+  const list = schedule(person, dayIdxOf(date));
+  const keys = list.filter(b => b.key);
+  const keyDone = keys.filter(b => isChecked(person, date, b)).length;
+  return {keys: keys.length, keyDone, full: keys.length > 0 && keyDone === keys.length, list};
+}
+function streak(person){
+  const n = routineNow();
+  let d = n.date, count = 0;
+  if (!dayStats(person, d).full) d = addDays(d, -1); // today still in progress
+  for (let i = 0; i < 400; i++){
+    if (!dayStats(person, d).full) break;
+    count++; d = addDays(d, -1);
+  }
+  return count;
+}
+const weekStart = date => addDays(date, -dayIdxOf(date));
+
+/* ================= UI state ================= */
+const $ = id => document.getElementById(id);
+let now = routineNow();
+let day = now.day, followToday = true, view = "today";
+let edDay = now.day, edRows = [];
+
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2600);
+}
+function selectedDate(){ return addDays(weekStart(now.date), day); }
+const personName = p => p === "faisal" ? "Faisal" : "Akash";
+const partnerName = p => p === "faisal" ? "Akash" : "Faisal";
+
+/* ---------- Today ---------- */
+const daysEl = $("days");
+DAYS.forEach((d, i) => {
+  const b = document.createElement("button");
+  b.id = "d-" + d.k; b.innerHTML = `<b>${d.k}</b><small></small>`;
+  b.onclick = () => { day = i; followToday = (i === now.day); renderToday(); };
+  daysEl.appendChild(b);
+});
+$("todayBtn").onclick = () => { day = now.day; followToday = true; renderToday(); };
+
+function renderNow(){
+  const p = S.person;
+  $("clock").textContent = now.real.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+  $("date").textContent = now.real.toLocaleDateString([], {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+  const list = schedule(p, now.day), m = now.min;
+  const cur = list.find(r => m >= r.s && m < r.e);
+  const nxt = list.find(r => r.s > m);
+  $("nowLabel").textContent = personName(p) + " · right now";
+  const nd = $("nowDone");
+  if (cur){
+    $("nowTask").innerHTML = `<span class="dot k-${cur.k}" style="margin-top:0;width:12px;height:12px"></span>${esc(cur.a)}`;
+    $("bar").style.width = Math.round((m - cur.s) / (cur.e - cur.s) * 100) + "%";
+    $("left").innerHTML = `<b>${dur(cur.e - m)}</b> left · ends ${fmt(cur.e)}`;
+    const done = isChecked(p, now.date, cur);
+    nd.hidden = false; nd.textContent = done ? "Done ✓" : "Mark as done"; nd.classList.toggle("on", done);
+    nd.onclick = () => { toggleCheck(p, now.date, cur); renderAll(); };
+  } else {
+    const asleep = !list.length || m >= list[list.length - 1].e || m < list[0].s;
+    $("nowTask").innerHTML = `<span class="dot" style="margin-top:0;width:12px;height:12px"></span>${asleep ? "Sleep time" : "Free time"}`;
+    $("bar").style.width = "0%";
+    $("left").textContent = asleep ? "Rest well, tomorrow starts early" : "Short gap before the next block";
+    nd.hidden = true;
+  }
+  if (nxt) $("next").innerHTML = `Next: <b>${esc(nxt.a)}</b> at ${fmt(nxt.s)} (in ${dur(nxt.s - m)})`;
+  else { const t = schedule(p, (now.day + 1) % 7)[0]; $("next").innerHTML = t ? `Tomorrow: <b>${esc(t.a)}</b> at ${fmt(t.s)}` : ""; }
+  const st = streak(p);
+  $("streakChip").textContent = st ? `🔥 ${st}-day streak` : "Check off every key block today to start a streak";
+}
+
+function renderToday(){
+  const p = S.person, d = DAYS[day], date = selectedDate();
+  const isToday = day === now.day, isFuture = day > now.day;
+  [...daysEl.children].forEach((b, i) => {
+    const off = p === "faisal" && DAYS[i].off;
+    const dt = addDays(weekStart(now.date), i);
+    const full = i <= now.day && dayStats(p, dt).full;
+    b.setAttribute("aria-pressed", i === day);
+    b.classList.toggle("off", off);
+    b.classList.toggle("is-today", i === now.day);
+    b.classList.toggle("complete", full);
+    b.querySelector("small").textContent = full ? "Done ✓" : off ? "Off" : "Work";
+  });
+  $("todayBtn").hidden = isToday;
+  const tgt = S.targets[p + "|" + dKey(weekStart(now.date))];
+  $("weekTarget").textContent = tgt ? "Week target: " + tgt.text + (tgt.done ? " ✓" : "") : "No project target set for this week";
+  $("dayTitle").textContent = `${d.n}, ${shortDate(date)}${isToday ? " (today)" : ""}`;
+  $("dayTag").textContent = p === "akash" ? "Office 9 AM – 10 PM" : (d.off ? "Weekend" : "Office 9 AM – 6 PM");
+  $("fTrade").textContent = d.trade;
+  $("fProjLabel").textContent = p === "faisal" ? "GRE project focus" : "Faisal's project tonight";
+  $("fProj").textContent = d.proj;
+
+  const m = now.min;
+  $("tl").innerHTML = schedule(p, day).map((r, i) => {
+    const checked = isChecked(p, date, r);
+    let cls = `k-${r.k}${r.key ? " key" : ""}${checked ? " done-check" : ""}`, pill = "";
+    if (isToday){ if (m >= r.e) cls += " past"; else if (m >= r.s){ cls += " current"; pill = `<span class="pill">Now</span>`; } }
+    else if (!isFuture) cls += " past";
+    return `<li class="${cls}">
+      <button class="chk" data-i="${i}" aria-pressed="${checked}" aria-label="Mark ${esc(r.a)} done" ${isFuture ? "disabled" : ""}>✓</button>
+      <time>${fmt(r.s)} – ${fmt(r.e)}</time>
+      <div class="act"><span class="dot"></span><div><strong>${esc(r.a)}</strong>${r.key ? `<span class="keytag">Key</span>` : ""}${pill}${r.note ? `<em>${esc(r.note)}</em>` : ""}</div></div></li>`;
+  }).join("");
+  $("tl").querySelectorAll(".chk").forEach(b => b.onclick = () => {
+    const r = schedule(p, day)[+b.dataset.i];
+    const before = dayStats(p, date).full;
+    toggleCheck(p, date, r);
+    if (!before && dayStats(p, date).full) toast("All key blocks done. Streak +1!");
+    renderAll();
+  });
+
+  renderNow();
+}
+
+/* ---------- Week ---------- */
+function renderWeek(){
+  const p = S.person, ws = weekStart(now.date);
+  $("weekRange").textContent = `${shortDate(ws)} – ${shortDate(addDays(ws, 6))}`;
+  const st = streak(p);
+  $("sStreak").innerHTML = `${st} <small>day${st === 1 ? "" : "s"}</small>`;
+
+  const cats = {together:{n:"Trading together",d:0,t:0}, project:{n:"GRE project",d:0,t:0}, gym:{n:"Gym / workout",d:0,t:0}};
+  let allKeys = 0, allDone = 0, fullDays = 0, grid = "";
+  for (let i = 0; i < 7; i++){
+    const dt = addDays(ws, i), future = i > now.day;
+    const ds = dayStats(p, dt);
+    if (!future){
+      ds.list.filter(b => b.key).forEach(b => {
+        const c = cats[b.k]; const done = isChecked(p, dt, b);
+        if (c){ c.t++; if (done) c.d++; }
+        allKeys++; if (done) allDone++;
+      });
+      if (ds.full) fullDays++;
+    }
+    grid += `<div class="${ds.full ? "full" : ""}${future ? " future" : ""}">${DAYS[i].k}<b>${future ? "–" : ds.keyDone + "/" + ds.keys}</b></div>`;
+  }
+  const score = allKeys ? Math.round(allDone / allKeys * 100) : 0;
+  $("sScore").innerHTML = `${score}<small>%</small>`;
+  $("sFull").innerHTML = `${fullDays} <small>of ${now.day + 1}</small>`;
+  $("weekgrid").innerHTML = grid;
+  $("meters").innerHTML = Object.entries(cats).filter(([, c]) => c.t).map(([k, c]) =>
+    `<div class="meter"><span>${c.n}</span><div class="track"><i style="width:${c.d / c.t * 100}%;background:var(--${k})"></i></div><span>${c.d}/${c.t}</span></div>`).join("");
+
+  const tk = p + "|" + dKey(ws), tgt = S.targets[tk];
+  $("targetInput").value = tgt ? tgt.text : "";
+  $("targetDone").hidden = !tgt;
+  $("targetDone").textContent = tgt && tgt.done ? "Target reached ✓ (tap to undo)" : "Mark target as reached";
+
+  // Summary to share
+  const ds = dayStats(p, now.date);
+  const keyLines = ds.list.filter(b => b.key).map(b => `${isChecked(p, now.date, b) ? "✅" : "⬜"} ${b.a}`);
+  const lines = [`${personName(p)} · ${DAYS[now.day].n} ${shortDate(now.date)}`, ...keyLines,
+    `Streak: ${st} day${st === 1 ? "" : "s"} · Week score: ${score}%`];
+  if (tgt) lines.push(`Week target: ${tgt.text}${tgt.done ? " ✓" : ""}`);  $("summary").value = lines.join("\n");
+}
+$("targetSave").onclick = () => {
+  const v = $("targetInput").value.trim(), k = S.person + "|" + dKey(weekStart(now.date));
+  if (v) S.targets[k] = {text: v, done: S.targets[k] ? S.targets[k].done : false}; else delete S.targets[k];
+  save(); toast(v ? "Week target saved" : "Week target cleared"); renderAll();
+};
+$("targetDone").onclick = () => {
+  const k = S.person + "|" + dKey(weekStart(now.date));
+  if (!S.targets[k]) return;
+  S.targets[k].done = !S.targets[k].done; save();
+  if (S.targets[k].done) toast("Week target reached. Great work!");
+  renderAll();
+};
+async function copyText(el, okMsg){
+  try { await navigator.clipboard.writeText(el.value); toast(okMsg); }
+  catch(e){ el.removeAttribute("readonly"); el.focus(); el.select(); toast("Text selected. Copy it from your keyboard menu."); }
+}
+$("copySummary").onclick = () => copyText($("summary"), "Summary copied. Paste it to " + partnerName(S.person));
+
+/* ---------- Journal ---------- */
+$("jform").addEventListener("submit", e => {
+  e.preventDefault();
+  S.journal.unshift({
+    id: Date.now(), person: S.person, date: dKey(now.date),
+    pair: $("jPair").value.trim().toUpperCase(), dir: $("jDir").value,
+    why: $("jWhy").value.trim(), exit: $("jExit").value.trim(),
+    res: $("jRes").value, r: $("jR").value === "" ? null : parseFloat($("jR").value),
+    lesson: $("jLesson").value.trim()
+  });
+  save(); e.target.reset(); toast("Trade added to journal"); renderJournal();
+});
+function renderJournal(){
+  const list = S.journal.filter(j => j.person === S.person);
+  $("jCount").textContent = list.length + " trade" + (list.length === 1 ? "" : "s");
+  const wins = list.filter(j => j.res === "win").length, losses = list.filter(j => j.res === "loss").length;
+  const rTotal = list.reduce((a, j) => a + (j.r || 0), 0);
+  const wr = wins + losses ? Math.round(wins / (wins + losses) * 100) : 0;
+  $("jStats").innerHTML = list.length ? `
+    <div class="stat"><div class="label">Win rate</div><div class="big">${wr}<small>%</small></div></div>
+    <div class="stat"><div class="label">Wins / losses</div><div class="big">${wins}<small> / ${losses}</small></div></div>
+    <div class="stat"><div class="label">Total R</div><div class="big" style="color:var(--${rTotal >= 0 ? "good" : "bad"})">${rTotal >= 0 ? "+" : ""}${rTotal.toFixed(1)}<small>R</small></div></div>` : "";
+  $("jList").innerHTML = list.length ? list.map(j => `
+    <div class="jitem">
+      <div class="top"><strong>${esc(j.pair)} · ${esc(j.dir)}</strong>
+        <span class="res ${j.res}">${j.res === "win" ? "WIN" : j.res === "loss" ? "LOSS" : "BREAK EVEN"}${j.r != null ? ` ${j.r >= 0 ? "+" : ""}${j.r}R` : ""}</span></div>
+      <p><span>${esc(j.date)}</span></p>
+      <p><span>Entry: </span>${esc(j.why)}</p>
+      ${j.exit ? `<p><span>Exit: </span>${esc(j.exit)}</p>` : ""}
+      ${j.lesson ? `<p><span>Lesson: </span>${esc(j.lesson)}</p>` : ""}
+      <div class="row"><button class="btn danger" data-del="${j.id}">Delete</button></div>
+    </div>`).join("") : `<p class="empty">No trades yet. After each practice trade, write why you entered, why you exited and one lesson.</p>`;
+  $("jList").querySelectorAll("[data-del]").forEach(b => {
+    b.onclick = () => {
+      if (b.dataset.armed){ S.journal = S.journal.filter(j => j.id !== +b.dataset.del); save(); renderJournal(); }
+      else { b.dataset.armed = "1"; b.textContent = "Tap again to delete"; }
+    };
+  });
+}
+
+/* ---------- Settings: notifications ---------- */
+const canNotify = isNative || "Notification" in window;
+function renderNotify(){
+  const btn = $("notifyBtn"), st = $("notifyState");
+  if (isNative){
+    btn.hidden = false;
+    btn.textContent = S.notify ? "Turn reminders off" : "Turn reminders on";
+    st.textContent = S.notify ? "On: 5 minutes before each block, even when the app is closed" : "Off";
+    return;
+  }
+  if (!canNotify){ btn.hidden = true; st.textContent = "Notifications are not available here. Install the app on your phone to use them."; return; }
+  btn.hidden = false;
+  const perm = Notification.permission;
+  btn.textContent = S.notify && perm === "granted" ? "Turn reminders off" : "Turn reminders on";
+  st.textContent = perm === "denied" ? "Notifications are blocked. Allow them in your browser settings." :
+    S.notify && perm === "granted" ? "On: 5 minutes before each block" : "Off";
+}
+$("notifyBtn").onclick = async () => {
+  if (isNative){
+    S.notify = !S.notify; save();
+    if (S.notify){ try { RoutineNative.requestNotifications(); } catch(e){} toast("Reminders are on"); }
+    renderNotify(); return;
+  }
+  if (S.notify && Notification.permission === "granted"){ S.notify = false; save(); renderNotify(); return; }
+  let perm = Notification.permission;
+  try { if (perm === "default") perm = await Notification.requestPermission(); } catch(e){ perm = "denied"; }
+  S.notify = perm === "granted"; save(); renderNotify();
+  if (S.notify) notify("Reminders are on", "You'll get a reminder 5 minutes before each block.");
+};
+async function notify(title, body){
+  try {
+    const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration();
+    if (reg) await reg.showNotification(title, {body, icon: "icons/icon-192.png", badge: "icons/icon-192.png", tag: title});
+    else new Notification(title, {body});
+  } catch(e){}
+}
+function checkReminders(){
+  const list = schedule(S.person, now.day), m = now.min, dk = S.person + "|" + dKey(now.date);
+  const upcoming = list.find(b => b.s - m > 0 && b.s - m <= 5);
+  if (!upcoming) return;
+  const id = dk + "|" + upcoming.s;
+  if (S.notified[id]) return;
+  S.notified = Object.fromEntries(Object.entries(S.notified).filter(([k]) => k.startsWith(dk))); // keep today only
+  S.notified[id] = 1; save();
+  const msg = `${upcoming.a} starts at ${fmt(upcoming.s)}`;
+  toast("In " + (upcoming.s - m) + " min: " + upcoming.a);
+  if (!isNative && S.notify && "Notification" in window && Notification.permission === "granted") notify("Coming up in " + (upcoming.s - m) + " min", msg);
+}
+
+/* ---------- Settings: editor ---------- */
+DAYS.forEach((d, i) => { const o = document.createElement("option"); o.value = i; o.textContent = d.n; $("edDay").appendChild(o); });
+$("edDay").onchange = () => { edDay = +$("edDay").value; loadEditor(); };
+function loadEditor(){
+  $("edDay").value = edDay;
+  $("edWho").textContent = personName(S.person) + ", " + DAYS[edDay].n + (S.custom[S.person] && S.custom[S.person][DAYS[edDay].k] ? " (customized)" : "");
+  edRows = schedule(S.person, edDay).map(b => ({...b}));
+  drawEditor();
+}
+function drawEditor(){
+  const kindOpts = k => Object.entries(KINDS).map(([v, n]) => `<option value="${v}"${v === k ? " selected" : ""}>${n}</option>`).join("");
+  $("edList").innerHTML = edRows.map((b, i) => `
+    <div class="erow" data-i="${i}">
+      <input type="time" aria-label="Start" value="${hhmm(b.s)}" data-f="s">
+      <input type="time" aria-label="End" value="${hhmm(b.e)}" data-f="e">
+      <input class="txt" aria-label="Activity" value="${esc(b.a)}" data-f="a" maxlength="80">
+      <select aria-label="Type" data-f="k">${kindOpts(b.k)}</select>
+      <label class="keybox"><input type="checkbox" data-f="key" ${b.key ? "checked" : ""}>Key</label>
+      <button class="btn danger" data-rm="${i}" aria-label="Remove block">✕</button>
+    </div>`).join("");
+  $("edList").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { readEditor(); edRows.splice(+b.dataset.rm, 1); drawEditor(); });
+}
+function readEditor(){
+  // Keep raw values; convert on save
+  $("edList").querySelectorAll(".erow").forEach(row => {
+    const r = edRows[+row.dataset.i];
+    row.querySelectorAll("[data-f]").forEach(inp => {
+      const f = inp.dataset.f;
+      if (f === "key") r.key = inp.checked;
+      else if (f === "s" || f === "e") r["_" + f] = inp.value;
+      else r[f] = inp.value;
+    });
+  });
+}
+$("edAdd").onclick = () => {
+  readEditor();
+  const last = edRows[edRows.length - 1];
+  const s = last ? last.e : 8 * 60;
+  edRows.push({s, e: s + 30, a: "New block", k: "rest", note: "", key: false});
+  drawEditor();
+};
+$("edSave").onclick = () => {
+  readEditor();
+  const out = [];
+  for (const r of edRows){
+    let s = r._s != null ? toMin(r._s || "00:00") : r.s;
+    let e = r._e != null ? toMin(r._e || "00:00") : r.e;
+    if (r._s != null){ s %= 1440; if (s < DAY_START) s += 1440; }
+    if (r._e != null){ e %= 1440; while (e <= s) e += 1440; }
+    if (!r.a.trim()) continue;
+    out.push({s, e, a: r.a.trim(), k: r.k, note: r.note || "", key: !!r.key});
+  }
+  out.sort((a, b) => a.s - b.s);
+  for (let i = 1; i < out.length; i++) if (out[i].s === out[i - 1].s){ toast("Two blocks start at the same time. Change one of them."); return; }
+  S.custom[S.person] = S.custom[S.person] || {};
+  S.custom[S.person][DAYS[edDay].k] = out; save();
+  toast(DAYS[edDay].n + " saved"); loadEditor(); renderAll();
+};
+$("edReset").onclick = () => $("edResetConfirm").hidden = false;
+$("edResetNo").onclick = () => $("edResetConfirm").hidden = true;
+$("edResetYes").onclick = () => {
+  if (S.custom[S.person]) delete S.custom[S.person][DAYS[edDay].k];
+  save(); $("edResetConfirm").hidden = true; toast(DAYS[edDay].n + " reset to default"); loadEditor(); renderAll();
+};
+
+/* ---------- Settings: backup ---------- */
+$("bkCopy").onclick = () => { const t = $("backup"); t.value = JSON.stringify(S); copyText(t, "Backup copied. Save it somewhere safe."); };
+$("bkRestore").onclick = () => {
+  try {
+    const data = JSON.parse($("backup").value);
+    if (!data || typeof data !== "object" || !("checks" in data)) throw 0;
+    S = Object.assign(S, data); save(); toast("Backup restored"); loadEditor(); renderAll();
+  } catch(e){ toast("That text is not a valid backup. Copy the full backup and try again."); }
+};
+
+/* ---------- Shell ---------- */
+document.querySelectorAll(".seg button").forEach(b => b.onclick = () => { S.person = b.dataset.p; save(); loadEditor(); renderAll(); });
+document.querySelectorAll(".tabbar button").forEach(b => b.onclick = () => { view = b.dataset.v; renderView(); window.scrollTo(0, 0); });
+function renderView(){
+  ["today","week","journal","settings"].forEach(v => {
+    $("v-" + v).hidden = v !== view;
+    $("t-" + v).setAttribute("aria-current", v === view ? "page" : "false");
+  });
+}
+function renderAll(){
+  document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.p === S.person));
+  $("who-sub").textContent = S.person === "faisal" ? "Office 9–6 · Gym · Trading with Akash · GRE project last" : "Office 9–10 · Workout · Trading with Faisal · Sleep by 12:30";
+  renderToday(); renderWeek(); renderJournal(); renderNotify();
+}
+function tick(){
+  const prev = now.day;
+  now = routineNow();
+  if (now.day !== prev){ if (followToday) day = now.day; pushNative(); } // new routine day at 6 AM
+  checkReminders();
+  renderToday();
+  if (view === "week") renderWeek();
+}
+if (location.hash && ["today","week","journal","settings"].includes(location.hash.slice(1))) view = location.hash.slice(1);
+renderView(); loadEditor(); renderAll(); checkReminders(); pushNative();
+setInterval(tick, 20000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>

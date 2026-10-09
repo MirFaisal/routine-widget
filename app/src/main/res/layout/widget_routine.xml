@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/w_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg"
+    android:orientation="vertical"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextClock
+            android:id="@+id/w_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:format12Hour="h:mm"
+            android:format24Hour="H:mm"
+            android:textColor="#F2F3FA"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/w_day"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="#A9AECB"
+            android:textSize="13sp"
+            android:text="Today" />
+
+        <TextView
+            android:id="@+id/w_streak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#F0A83A"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:letterSpacing="0.1"
+        android:text="RIGHT NOW"
+        android:textColor="#A9AECB"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/w_dot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/dot" />
+
+        <TextView
+            android:id="@+id/w_task"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="#F2F3FA"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:text="Loading…" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/w_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_marginTop="8dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:maxHeight="6dp"
+        android:minHeight="6dp"
+        android:progressDrawable="@drawable/widget_progress" />
+
+    <TextView
+        android:id="@+id/w_left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="#F2F3FA"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/w_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="#A9AECB"
+        android:textSize="12sp" />
+</LinearLayout>

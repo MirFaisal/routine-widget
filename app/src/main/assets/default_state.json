@@ -1,0 +1,1008 @@
+{
+ "person": "faisal",
+ "notify": false,
+ "streak": {
+  "faisal": 0,
+  "akash": 0
+ },
+ "schedules": {
+  "faisal": {
+   "Sat": [
+    {
+     "s": 450,
+     "e": 480,
+     "a": "Wake up, freshen up, breakfast",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 480,
+     "e": 500,
+     "a": "Quick market check, plan today's 3 main tasks",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 500,
+     "e": 540,
+     "a": "Travel to office + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1080,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1080,
+     "e": 1120,
+     "a": "Snack, travel to gym + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1120,
+     "e": 1260,
+     "a": "Gym",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 1260,
+     "e": 1320,
+     "a": "Shower, dinner, rest",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Free time, or update trading journal",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Akash",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1425,
+     "a": "Short break, tea or water",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1425,
+     "e": 1485,
+     "a": "GRE project",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 1485,
+     "e": 1500,
+     "a": "Commit code, write tomorrow's to-do, sleep at 1 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Sun": [
+    {
+     "s": 450,
+     "e": 480,
+     "a": "Wake up, freshen up, breakfast",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 480,
+     "e": 500,
+     "a": "Quick market check, plan today's 3 main tasks",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 500,
+     "e": 540,
+     "a": "Travel to office + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1080,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1080,
+     "e": 1120,
+     "a": "Snack, travel to gym + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1120,
+     "e": 1260,
+     "a": "Gym",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 1260,
+     "e": 1320,
+     "a": "Shower, dinner, rest",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Free time, or update trading journal",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Akash",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1425,
+     "a": "Short break, tea or water",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1425,
+     "e": 1485,
+     "a": "GRE project",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 1485,
+     "e": 1500,
+     "a": "Commit code, write tomorrow's to-do, sleep at 1 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Mon": [
+    {
+     "s": 450,
+     "e": 480,
+     "a": "Wake up, freshen up, breakfast",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 480,
+     "e": 500,
+     "a": "Quick market check, plan today's 3 main tasks",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 500,
+     "e": 540,
+     "a": "Travel to office + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1080,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1080,
+     "e": 1120,
+     "a": "Snack, travel to gym + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1120,
+     "e": 1260,
+     "a": "Gym",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 1260,
+     "e": 1320,
+     "a": "Shower, dinner, rest",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Free time, or update trading journal",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Akash",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1425,
+     "a": "Short break, tea or water",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1425,
+     "e": 1485,
+     "a": "GRE project",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 1485,
+     "e": 1500,
+     "a": "Commit code, write tomorrow's to-do, sleep at 1 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Tue": [
+    {
+     "s": 450,
+     "e": 480,
+     "a": "Wake up, freshen up, breakfast",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 480,
+     "e": 500,
+     "a": "Quick market check, plan today's 3 main tasks",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 500,
+     "e": 540,
+     "a": "Travel to office + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1080,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1080,
+     "e": 1120,
+     "a": "Snack, travel to gym + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1120,
+     "e": 1260,
+     "a": "Gym",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 1260,
+     "e": 1320,
+     "a": "Shower, dinner, rest",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Free time, or update trading journal",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Akash",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1425,
+     "a": "Short break, tea or water",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1425,
+     "e": 1485,
+     "a": "GRE project",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 1485,
+     "e": 1500,
+     "a": "Commit code, write tomorrow's to-do, sleep at 1 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Wed": [
+    {
+     "s": 450,
+     "e": 480,
+     "a": "Wake up, freshen up, breakfast",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 480,
+     "e": 500,
+     "a": "Quick market check, plan today's 3 main tasks",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 500,
+     "e": 540,
+     "a": "Travel to office + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1080,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1080,
+     "e": 1120,
+     "a": "Snack, travel to gym + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1120,
+     "e": 1260,
+     "a": "Gym",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 1260,
+     "e": 1320,
+     "a": "Shower, dinner, rest",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Free time, or update trading journal",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Akash",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1425,
+     "a": "Short break, tea or water",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1425,
+     "e": 1530,
+     "a": "GRE project",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 1530,
+     "e": 1560,
+     "a": "Commit code, sleep at 2 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Thu": [
+    {
+     "s": 540,
+     "e": 600,
+     "a": "Wake up, breakfast",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 600,
+     "e": 780,
+     "a": "GRE project, long session",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 780,
+     "e": 900,
+     "a": "Lunch and rest",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 900,
+     "e": 1020,
+     "a": "Solo trading backtesting",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1020,
+     "e": 1110,
+     "a": "Errands, family, friends",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1120,
+     "e": 1260,
+     "a": "Gym",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 1260,
+     "e": 1350,
+     "a": "Dinner, free time",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Akash",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1425,
+     "a": "Short break, tea or water",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1425,
+     "e": 1530,
+     "a": "GRE project",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 1530,
+     "e": 1560,
+     "a": "Commit code, sleep at 2 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Fri": [
+    {
+     "s": 540,
+     "e": 600,
+     "a": "Wake up, breakfast",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 600,
+     "e": 720,
+     "a": "GRE project, morning session",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 750,
+     "e": 900,
+     "a": "Jumu'ah, lunch with family",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 900,
+     "e": 990,
+     "a": "Clean room, laundry, weekly errands",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 990,
+     "e": 1080,
+     "a": "Rest, outing or hobby",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1120,
+     "e": 1260,
+     "a": "Gym, or a rest day for your body",
+     "k": "gym",
+     "key": false
+    },
+    {
+     "s": 1260,
+     "e": 1350,
+     "a": "Dinner, free time",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Weekly trading review with Akash",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1425,
+     "a": "Short break",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1425,
+     "e": 1485,
+     "a": "Plan next week, set project target",
+     "k": "project",
+     "key": true
+    },
+    {
+     "s": 1485,
+     "e": 1500,
+     "a": "Sleep at 1 AM",
+     "k": "rest",
+     "key": false
+    }
+   ]
+  },
+  "akash": {
+   "Sat": [
+    {
+     "s": 450,
+     "e": 460,
+     "a": "Wake up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 460,
+     "e": 480,
+     "a": "20-minute home workout",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 480,
+     "e": 540,
+     "a": "Breakfast, travel + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1320,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Dinner, freshen up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Faisal",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1440,
+     "a": "Update trading journal or light learning",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1440,
+     "e": 1470,
+     "a": "Wind down, sleep by 12:30 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Sun": [
+    {
+     "s": 450,
+     "e": 460,
+     "a": "Wake up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 460,
+     "e": 480,
+     "a": "20-minute home workout",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 480,
+     "e": 540,
+     "a": "Breakfast, travel + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1320,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Dinner, freshen up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Faisal",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1440,
+     "a": "Update trading journal or light learning",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1440,
+     "e": 1470,
+     "a": "Wind down, sleep by 12:30 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Mon": [
+    {
+     "s": 450,
+     "e": 460,
+     "a": "Wake up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 460,
+     "e": 480,
+     "a": "20-minute home workout",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 480,
+     "e": 540,
+     "a": "Breakfast, travel + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1320,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Dinner, freshen up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Faisal",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1440,
+     "a": "Update trading journal or light learning",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1440,
+     "e": 1470,
+     "a": "Wind down, sleep by 12:30 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Tue": [
+    {
+     "s": 450,
+     "e": 460,
+     "a": "Wake up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 460,
+     "e": 480,
+     "a": "20-minute home workout",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 480,
+     "e": 540,
+     "a": "Breakfast, travel + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1320,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Dinner, freshen up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Faisal",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1440,
+     "a": "Update trading journal or light learning",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1440,
+     "e": 1470,
+     "a": "Wind down, sleep by 12:30 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Wed": [
+    {
+     "s": 450,
+     "e": 460,
+     "a": "Wake up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 460,
+     "e": 480,
+     "a": "20-minute home workout",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 480,
+     "e": 540,
+     "a": "Breakfast, travel + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1320,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Dinner, freshen up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Faisal",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1440,
+     "a": "Update trading journal or light learning",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1440,
+     "e": 1470,
+     "a": "Wind down, sleep by 12:30 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Thu": [
+    {
+     "s": 450,
+     "e": 460,
+     "a": "Wake up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 460,
+     "e": 480,
+     "a": "20-minute home workout",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 480,
+     "e": 540,
+     "a": "Breakfast, travel + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1320,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Dinner, freshen up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Faisal",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1440,
+     "a": "Update trading journal or light learning",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1440,
+     "e": 1470,
+     "a": "Wind down, sleep by 12:30 AM",
+     "k": "rest",
+     "key": false
+    }
+   ],
+   "Fri": [
+    {
+     "s": 450,
+     "e": 460,
+     "a": "Wake up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 460,
+     "e": 480,
+     "a": "20-minute home workout",
+     "k": "gym",
+     "key": true
+    },
+    {
+     "s": 480,
+     "e": 540,
+     "a": "Breakfast, travel + learning audio",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 540,
+     "e": 1320,
+     "a": "Office",
+     "k": "office",
+     "key": false
+    },
+    {
+     "s": 1320,
+     "e": 1350,
+     "a": "Dinner, freshen up",
+     "k": "rest",
+     "key": false
+    },
+    {
+     "s": 1350,
+     "e": 1410,
+     "a": "Trading practice with Faisal",
+     "k": "together",
+     "key": true
+    },
+    {
+     "s": 1410,
+     "e": 1440,
+     "a": "Update trading journal or light learning",
+     "k": "trade",
+     "key": false
+    },
+    {
+     "s": 1440,
+     "e": 1470,
+     "a": "Wind down, sleep by 12:30 AM",
+     "k": "rest",
+     "key": false
+    }
+   ]
+  }
+ }
+}
